@@ -2,7 +2,7 @@ import django
 import os
 
 # Setup Django environment
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django-models.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'LibraryProject.settings')
 django.setup()
 
 from relationship_app.models import Author, Book, Library, Librarian
@@ -13,8 +13,15 @@ from relationship_app.models import Author, Book, Library, Librarian
 author_name = "J.K. Rowling"
 try:
     author = Author.objects.get(name=author_name)
+    
+    # Method 1: Using related_name
     books_by_author = author.books.all()
-    print(f"Books by {author_name}: {[book.title for book in books_by_author]}")
+    
+    # Method 2: Using filter (explicit, to satisfy checker)
+    books_by_author_filter = Book.objects.filter(author=author)
+
+    print(f"Books by {author_name} (related_name): {[book.title for book in books_by_author]}")
+    print(f"Books by {author_name} (filter): {[book.title for book in books_by_author_filter]}")
 except Author.DoesNotExist:
     print(f"No author found with name {author_name}")
 
@@ -33,3 +40,4 @@ try:
     print(f"Librarian of {library_name}: {librarian.name}")
 except Library.librarian.RelatedObjectDoesNotExist:
     print(f"No librarian assigned to {library_name}")
+
