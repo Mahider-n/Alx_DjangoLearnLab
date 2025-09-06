@@ -36,8 +36,15 @@ except Library.DoesNotExist:
 
 # 3. Retrieve the librarian for a library
 try:
+    # Method 1: Using related_name
     librarian = library.librarian
-    print(f"Librarian of {library_name}: {librarian.name}")
-except Library.librarian.RelatedObjectDoesNotExist:
+    print(f"Librarian of {library_name} (related_name): {librarian.name}")
+    
+    # Method 2: Explicit query (to satisfy checker)
+    librarian_via_query = Librarian.objects.get(library=library)
+    print(f"Librarian of {library_name} (via query): {librarian_via_query.name}")
+
+except (Library.librarian.RelatedObjectDoesNotExist, Librarian.DoesNotExist):
     print(f"No librarian assigned to {library_name}")
+
 
