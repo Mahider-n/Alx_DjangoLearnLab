@@ -16,24 +16,24 @@ def book_list(request):
 @permission_required('bookshelf.can_create', raise_exception=True)
 def book_create(request):
     if request.method == 'POST':
-        form = BookForm(request.POST)
+        form = BookSearchForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('book_list')
     else:
-        form = BookForm()
+        form = BookSearchForm()
     return render(request, 'bookshelf/book_form.html', {'form': form})
 
 @permission_required('bookshelf.can_edit', raise_exception=True)
 def book_edit(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
-        form = BookForm(request.POST, instance=book)
+        form = BookSearchForm(request.POST, instance=book)
         if form.is_valid():
             form.save()
             return redirect('book_list')
     else:
-        form = BookForm(instance=book)
+        form = BookSearchForm(instance=book)
     return render(request, 'bookshelf/book_form.html', {'form': form})
 
 @permission_required('bookshelf.can_delete', raise_exception=True)
