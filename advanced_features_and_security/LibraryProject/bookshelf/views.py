@@ -2,7 +2,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import permission_required
 from .models import Book
-from .forms import BookForm
+# from .forms import BookForm
+from .forms import BookSearchForm
+
+# All input is validated using Django forms to prevent SQL injection.
+# CSRF tokens are required in all POST forms.
 
 @permission_required('bookshelf.can_view', raise_exception=True)
 def book_list(request):
@@ -37,3 +41,11 @@ def book_delete(request, pk):
     book = get_object_or_404(Book, pk=pk)
     book.delete()
     return redirect('book_list')
+def search_books(request):
+    form = BookSearchForm(request.GET or None)
+    books = Book.objects.none()
+    if form.is_valid():
+        query = form.cleaned_data['query']
+        # ORM automatically prevents SQL injection
+        books = Book.objects.filter(title__icontains=query)
+    return render(request, 'bookshelf/book_list.html', {'form': form, 'books': books})
