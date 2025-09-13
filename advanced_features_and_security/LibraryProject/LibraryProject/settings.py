@@ -62,6 +62,8 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 
 # Enable browser XSS filter
 SECURE_BROWSER_XSS_FILTER = True
+# Trust the X-Forwarded-Proto header from the proxy
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 ALLOWED_HOSTS = []
