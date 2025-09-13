@@ -16,10 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from . import views
+# from . import views
+from bookshelf import views  # <-- import views from app
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('admin/', admin.site.urls),
-    path('', include('relationship_app.urls')),  # class-based view
+    path('', include('relationship_app.urls')),
+    path('', views.home, name='home'),
+  # class-based view
 ]

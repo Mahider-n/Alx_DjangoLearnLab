@@ -11,7 +11,10 @@ class Book(models.Model):
         return f"{self.title} by {self.author} ({self.publication_year})"
 class Profile(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,  # references your custom user
+        settings.AUTH_USER_MODEL,  # references your CustomUser
         on_delete=models.CASCADE
     )
     bio = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"Profile of {self.user.username}"
