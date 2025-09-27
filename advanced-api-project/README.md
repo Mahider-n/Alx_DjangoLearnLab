@@ -10,3 +10,19 @@
 ## Permissions
 - Unauthenticated users → Read-only access (List & Detail).
 - Authenticated users → Can create, update, and delete books.
+
+
+# Book API - Filtering, Searching, Ordering
+
+## Filtering
+- /api/books/?title=Python
+- /api/books/?author__name=John
+- /api/books/?publication_year=2023
+
+## Searching
+- /api/books/?search=Python
+- /api/books/?search=John
+
+## Ordering
+- /api/books/?ordering=title
+- /api/books/?ordering=-publication_year
