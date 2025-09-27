@@ -1,10 +1,8 @@
-from django.shortcuts import render
-
-# Create your views here.
-from rest_framework import generics, permissions
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from .models import Book
 from .serializers import BookSerializer
-
 
 # ------------------------------
 # CRUD operations using generics
@@ -12,22 +10,22 @@ from .serializers import BookSerializer
 
 class BookListView(generics.ListAPIView):
     """
-    GET: Retrieve all books.
-    Accessible by anyone (Read-only).
+    GET: List all books.
+    Accessible by anyone (read-only).
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]  # anyone can view
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class BookDetailView(generics.RetrieveAPIView):
     """
     GET: Retrieve a single book by ID.
-    Accessible by anyone (Read-only).
+    Accessible by anyone (read-only).
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class BookCreateView(generics.CreateAPIView):
@@ -37,14 +35,9 @@ class BookCreateView(generics.CreateAPIView):
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        """
-        Customize behavior on creation.
-        Example: attach request.user as the book's author
-        (if you later expand to track logged-in authors).
-        """
         serializer.save()
 
 
@@ -55,12 +48,9 @@ class BookUpdateView(generics.UpdateAPIView):
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def perform_update(self, serializer):
-        """
-        Hook into update to log or modify data if needed.
-        """
         serializer.save()
 
 
@@ -71,4 +61,4 @@ class BookDeleteView(generics.DestroyAPIView):
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
