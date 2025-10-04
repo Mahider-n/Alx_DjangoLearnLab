@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Profile
 from .models import Comment
-from .models import Post
+from .models import Post,Tag
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(required=True, help_text='Required')
@@ -33,9 +33,12 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ['content']
 class PostForm(forms.ModelForm):
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        required=False,
+        widget=forms.CheckboxSelectMultiple
+    )
+
     class Meta:
         model = Post
-        fields = ['title', 'content']
-        widgets = {
-            'content': forms.Textarea(attrs={'rows': 5}),
-        }
+        fields = ['title', 'content', 'tags']

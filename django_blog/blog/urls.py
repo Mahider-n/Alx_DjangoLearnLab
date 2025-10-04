@@ -6,6 +6,7 @@ from .views import (
     PostCreateView, PostUpdateView, PostDeleteView
 )
 from .views import CommentCreateView, CommentUpdateView, CommentDeleteView
+from .views import search_posts, posts_by_tag
 
 urlpatterns = [
     path('register/', views.register, name='register'),
@@ -26,4 +27,8 @@ urlpatterns = [
 
     # Delete a comment by comment ID
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='delete_comment'),
+
+    path('search/', search_posts, name='search_posts'),
+    path('tags/<str:tag_name>/', posts_by_tag, name='posts_by_tag'),
+
 ]
