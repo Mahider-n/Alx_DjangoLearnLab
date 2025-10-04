@@ -39,3 +39,11 @@ Navigation: List → Detail → Create/Edit/Delete.
 URLs: /posts/, /posts/new/, /posts/<pk>/, /posts/<pk>/edit/, /posts/<pk>/delete/.
 
 Include this explanation in your README or as code comments.
+
+Add Comment: /posts/<post_id>/comments/new/ → POST by authenticated users.
+
+Edit Comment: /comments/<comment_id>/edit/ → Only author can edit.
+
+Delete Comment: /comments/<comment_id>/delete/ → Only author can delete.
+
+Permissions: Checked via login_required and filtering by author=request.user.
