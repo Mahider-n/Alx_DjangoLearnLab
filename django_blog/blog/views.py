@@ -168,8 +168,9 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('post_detail', kwargs={'pk': self.get_object().post.id})
+
 def search_posts(request):
-    query = request.GET.get('q')
+    query = request.GET.get('q', '')
     results = Post.objects.filter(
         Q(title__icontains=query) |
         Q(content__icontains=query) |
@@ -177,6 +178,7 @@ def search_posts(request):
     ).distinct()
     return render(request, 'blog/search_results.html', {'results': results, 'query': query})
 
+# blog/views.py
 def posts_by_tag(request, tag_name):
     posts = Post.objects.filter(tags__name=tag_name)
     return render(request, 'blog/posts_by_tag.html', {'posts': posts, 'tag_name': tag_name})

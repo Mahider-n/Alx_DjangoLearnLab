@@ -47,3 +47,41 @@ Edit Comment: /comments/<comment_id>/edit/ → Only author can edit.
 Delete Comment: /comments/<comment_id>/delete/ → Only author can delete.
 
 Permissions: Checked via login_required and filtering by author=request.user.
+
+Tagging and Search Features – Quick Guide
+
+1. Tagging Posts
+
+Posts can have multiple tags (many-to-many).
+
+Tags are displayed on the post detail page.
+
+Clicking a tag shows all posts with that tag (/tags/<tag_name>/).
+
+2. Search Functionality
+
+Search bar is in the header (base.html).
+
+Users can search posts by title, content, or tag names.
+
+Search results are shown on a dedicated page (/search/).
+
+3. URLs
+
+path('tags/<str:tag_name>/', views.posts_by_tag, name='posts_by_tag')
+
+path('search/', views.search_posts, name='search_posts')
+
+4. Templates
+
+posts_by_tag.html – lists posts for a tag.
+
+search_results.html – displays posts matching a search query.
+
+post_detail.html – displays tags and comments for a post.
+
+5. Views
+
+posts_by_tag(request, tag_name) – filters posts by tag.
+
+search_posts(request) – filters posts by search query using Q lookups.
