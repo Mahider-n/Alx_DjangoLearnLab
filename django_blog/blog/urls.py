@@ -5,6 +5,7 @@ from .views import (
     PostListView, PostDetailView,
     PostCreateView, PostUpdateView, PostDeleteView
 )
+from .views import CommentCreateView, CommentUpdateView, CommentDeleteView
 
 urlpatterns = [
     path('register/', views.register, name='register'),
@@ -16,7 +17,9 @@ urlpatterns = [
     path('post/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
     path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post_update'),  # singular 'update'
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post_delete'),  # singular 'delete'
-    path('posts/<int:post_id>/comments/new/', views.add_comment, name='add_comment'),
-    path('comments/<int:comment_id>/edit/', views.edit_comment, name='edit_comment'),
-    path('comments/<int:comment_id>/delete/', views.delete_comment, name='delete_comment'),
+    
+ 
+    path('posts/<int:post_id>/comments/new/', CommentCreateView.as_view(), name='add_comment'),
+    path('comments/<int:pk>/edit/', CommentUpdateView.as_view(), name='edit_comment'),
+    path('comments/<int:pk>/delete/', CommentDeleteView.as_view(), name='delete_comment'),
 ]
