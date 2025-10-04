@@ -31,3 +31,9 @@ Configure media (serve via cloud storage or via proper server when DEBUG=False).
 Enforce HTTPS, secure cookies, set CSRF_TRUSTED_ORIGINS if needed.
 
 To add: email verification, password reset (Django has PasswordResetView etc.), social auth (django-allauth)
+
+Adding a comment: Authenticated users can add comments under a post.
+
+Editing/deleting: Only the author of a comment can edit or delete it.
+
+Viewing: All users can view comments.
