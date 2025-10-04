@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from .models import Profile
 from .models import Comment
 from .models import Post,Tag
+from django.forms import widgets  # <- import widgets
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(required=True, help_text='Required')
@@ -32,11 +33,17 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['content']
+class TagWidget(widgets.CheckboxSelectMultiple):
+    pass  # can customize if needed
+
+# -----------------------------
+# Post form with tags
+# -----------------------------
 class PostForm(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),
         required=False,
-        widget=forms.CheckboxSelectMultiple
+        widget=TagWidget()  # use the custom widget
     )
 
     class Meta:
