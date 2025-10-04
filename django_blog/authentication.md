@@ -32,8 +32,10 @@ Enforce HTTPS, secure cookies, set CSRF_TRUSTED_ORIGINS if needed.
 
 To add: email verification, password reset (Django has PasswordResetView etc.), social auth (django-allauth)
 
-Adding a comment: Authenticated users can add comments under a post.
+Access control: Only authenticated users can create posts; only the author can edit/delete.
 
-Editing/deleting: Only the author of a comment can edit or delete it.
+Navigation: List → Detail → Create/Edit/Delete.
 
-Viewing: All users can view comments.
+URLs: /posts/, /posts/new/, /posts/<pk>/, /posts/<pk>/edit/, /posts/<pk>/delete/.
+
+Include this explanation in your README or as code comments.
