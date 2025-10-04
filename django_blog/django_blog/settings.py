@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -77,19 +78,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'USER': 'root',   
+        'PORT': '3306',   
     }
 }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'blog_db',
-        'USER': 'root',
-        'PASSWORD': 'yourpassword',
-        'HOST': 'localhost',
-        'PORT': '3306',           # default MySQL port
-    }
-}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -127,9 +121,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+STATICFILES_DIRS = [BASE_DIR / 'blog' / 'static']
+
+
+# Media (for profile pictures)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Login redirect & login url
+LOGIN_REDIRECT_URL = 'home'     # or 'posts' as you like
+LOGOUT_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
