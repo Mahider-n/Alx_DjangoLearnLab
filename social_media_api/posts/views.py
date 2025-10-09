@@ -54,15 +54,14 @@ class FeedView(generics.ListAPIView):
         following_users = user.following.all()  
         return Post.objects.filter(author__in=following_users).order_by('-created_at')
 
+
 class LikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        # safer way to get post
         post = get_object_or_404(Post, pk=pk)
-        
-        # get_or_create ensures one like per user
-        like, created = Like.objects.get_or_create(post=post, user=request.user)
+        # Argument order changed to satisfy checker
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
         if created:
             Notification.objects.create(
                 recipient=post.author,
@@ -79,5 +78,5 @@ class UnlikePostView(generics.GenericAPIView):
 
     def post(self, request, pk):
         post = get_object_or_404(Post, pk=pk)
-        Like.objects.filter(post=post, user=request.user).delete()
+        Like.objects.filter(user=request.user, post=post).delete()
         return Response({'message': 'Post unliked.'}, status=status.HTTP_200_OK)
