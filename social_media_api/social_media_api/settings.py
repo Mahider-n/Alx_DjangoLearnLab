@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config
+from decouple import config, Csv
 import dj_database_url
 import os
 
@@ -31,8 +31,12 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com', 'herokuapp.com']  # production domains
-
+# ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com', 'herokuapp.com']  # production domains
+ALLOWED_HOSTS = config(
+    'ALLOWED_HOSTS',
+    default='localhost,127.0.0.1',
+    cast=Csv()
+)
 
 
 # Application definition
@@ -151,7 +155,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-CSRF_TRUSTED_ORIGINS = ['https://your-app-name.onrender.com']  # or your real domain
+CSRF_TRUSTED_ORIGINS = ['https://alx-djangolearnlab-yhtz.onrender.com']
+
+# CSRF_TRUSTED_ORIGINS = ['https://your-app-name.onrender.com']  # or your real domain
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
