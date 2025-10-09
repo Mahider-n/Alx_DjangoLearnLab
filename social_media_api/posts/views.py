@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 from rest_framework import viewsets, permissions, filters, generics
@@ -57,10 +58,12 @@ class LikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        post = Post.objects.get(pk=pk)
+        # safer way to get post
+        post = get_object_or_404(Post, pk=pk)
+        
+        # get_or_create ensures one like per user
         like, created = Like.objects.get_or_create(post=post, user=request.user)
         if created:
-            # Create notification
             Notification.objects.create(
                 recipient=post.author,
                 actor=request.user,
@@ -75,6 +78,6 @@ class UnlikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        post = Post.objects.get(pk=pk)
+        post = get_object_or_404(Post, pk=pk)
         Like.objects.filter(post=post, user=request.user).delete()
         return Response({'message': 'Post unliked.'}, status=status.HTTP_200_OK)
