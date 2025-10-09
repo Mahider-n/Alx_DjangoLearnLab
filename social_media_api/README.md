@@ -42,3 +42,18 @@ You’ll receive:
 GET /api/accounts/profile/ with header:
 
 Authorization: Token abc123...
+Connect GitHub repo to Render.
+
+Set gunicorn social_media_api.wsgi:application as Start Command.
+
+Set Build Command to install requirements + collectstatic.
+
+Set environment variables.
+
+Visit https://alx-djangolearnlab-yhtz.onrender.com to confirm live API.
+
+Test endpoints with Postman / curl:
+
+curl https://alx-djangolearnlab-yhtz.onrender.com/api/accounts/
+curl https://alx-djangolearnlab-yhtz.onrender.com/api/posts/
+curl https://alx-djangolearnlab-yhtz.onrender.com/api/notifications/
