@@ -5,6 +5,11 @@ from rest_framework import viewsets, permissions, filters, generics
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
 from rest_framework.pagination import PageNumberPagination
+from rest_framework import generics, permissions, status
+from rest_framework.response import Response
+from .models import Post, Like
+from notifications.models import Notification
+from django.contrib.contenttypes.models import ContentType
 
 # Custom permission: only author can edit/delete
 class IsAuthorOrReadOnly(permissions.BasePermission):
@@ -47,3 +52,29 @@ class FeedView(generics.ListAPIView):
         user = self.request.user
         following_users = user.following.all()  
         return Post.objects.filter(author__in=following_users).order_by('-created_at')
+
+class LikePostView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        like, created = Like.objects.get_or_create(post=post, user=request.user)
+        if created:
+            # Create notification
+            Notification.objects.create(
+                recipient=post.author,
+                actor=request.user,
+                verb='liked your post',
+                content_type=ContentType.objects.get_for_model(post),
+                object_id=post.id
+            )
+            return Response({'message': 'Post liked!'}, status=status.HTTP_201_CREATED)
+        return Response({'message': 'You already liked this post.'}, status=status.HTTP_400_BAD_REQUEST)
+
+class UnlikePostView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        Like.objects.filter(post=post, user=request.user).delete()
+        return Response({'message': 'Post unliked.'}, status=status.HTTP_200_OK)
