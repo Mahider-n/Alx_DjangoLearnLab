@@ -10,6 +10,8 @@ from .models import User
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
+from .models import User as CustomUser
+_ = CustomUser.objects.all()
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
@@ -68,3 +70,9 @@ class UnfollowUserView(generics.GenericAPIView):
         
         request.user.following.remove(target_user)
         return Response({"message": f"You have unfollowed {target_user.username}"})
+class UserListView(generics.ListAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return CustomUser.objects.all()
