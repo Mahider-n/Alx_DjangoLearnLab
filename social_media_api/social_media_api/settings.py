@@ -33,10 +33,11 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 # ALLOWED_HOSTS = []
 # ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com', 'herokuapp.com']  # production domains
 ALLOWED_HOSTS = [
-    "localhost",
+    "alx-djangolearnlab-yhtz.onrender.com",
     "127.0.0.1",
-    "alx-djangolearnlab-yhtz.onrender.com"
+    "localhost"
 ]
+
 
 
 
@@ -156,7 +157,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-CSRF_TRUSTED_ORIGINS = ['https://alx-djangolearnlab-yhtz.onrender.com']
+# CSRF_TRUSTED_ORIGINS = ['https://alx-djangolearnlab-yhtz.onrender.com']
+CSRF_TRUSTED_ORIGINS = [
+    "https://alx-djangolearnlab-yhtz.onrender.com"
+]
 
 # CSRF_TRUSTED_ORIGINS = ['https://your-app-name.onrender.com']  # or your real domain
 
