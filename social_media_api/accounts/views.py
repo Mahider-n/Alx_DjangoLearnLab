@@ -7,7 +7,9 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
 from .models import User
-
+from rest_framework import generics, permissions
+from rest_framework.response import Response
+from django.contrib.auth import get_user_model
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
@@ -40,3 +42,29 @@ class ProfileView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+User = get_user_model()
+
+class FollowUserView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, user_id):
+        try:
+            target_user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=404)
+        
+        request.user.following.add(target_user)
+        return Response({"message": f"You are now following {target_user.username}"})
+
+class UnfollowUserView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, user_id):
+        try:
+            target_user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=404)
+        
+        request.user.following.remove(target_user)
+        return Response({"message": f"You have unfollowed {target_user.username}"})

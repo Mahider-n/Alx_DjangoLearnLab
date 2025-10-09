@@ -41,3 +41,8 @@ class LoginSerializer(serializers.Serializer):
             data['token'] = token.key
             return data
         raise serializers.ValidationError("Invalid credentials")
+class FollowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'following', 'followers']
+        read_only_fields = ['followers']
