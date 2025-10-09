@@ -16,6 +16,8 @@ from .models import Post, Like
 from notifications.models import Notification
 from django.contrib.contenttypes.models import ContentType
 from rest_framework import generics
+from django.http import HttpResponse
+
 # post = generics.get_object_or_404(Post, pk=pk)
 # Custom permission: only author can edit/delete
 class IsAuthorOrReadOnly(permissions.BasePermission):
@@ -85,3 +87,5 @@ class UnlikePostView(generics.GenericAPIView):
         post = generics.get_object_or_404(Post, pk=pk)
         Like.objects.filter(user=request.user, post=post).delete()
         return Response({'message': 'Post unliked.'}, status=status.HTTP_200_OK)
+def home(request):
+    return HttpResponse("Welcome to Social Media API!")
